@@ -10,8 +10,7 @@ pipeline {
   stages {
     
     stage("build") {
-	    // when { expression { BRANCH_NAME == 'develop'  } } 
-         steps {
+	steps {
         echo 'Building the application...'
         echo 'Building Version ${NEW_VERSION}'
       	}
