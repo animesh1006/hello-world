@@ -19,5 +19,10 @@ pipeline {
         echo 'Deploying the application...'
       }
     }
+    stage('cat README') {
+      when {
+        branch "release"
+      }
+    }
   }
 }
