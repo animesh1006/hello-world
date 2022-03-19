@@ -23,6 +23,11 @@ pipeline {
       when {
         branch "release"
       }
+      steps {
+        sh '''
+        cat Readme.md
+        '''
+      }
     }
   }
 }
