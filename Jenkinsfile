@@ -43,7 +43,7 @@ pipeline {
     stage("build") {
 	steps {
         echo 'Building the application...'
-        echo 'Building Version ${NEW_VERSION}'
+        sh './gradlew build'
 		slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       	}
       }
@@ -55,7 +55,7 @@ pipeline {
 	      }
 	   }
       steps {
-	 
+	 sh './gradlew check'
         echo 'Testing the Applications Test-1'
     	    }
 	    post {
@@ -93,10 +93,10 @@ sh "cp zorg.txt zorg4.txt"
 		
    // Post-build actions
 post {
-   	 always {
-        // Let's wipe out the workspace before we finish!    deleteDir()
-                echo "Workspace cleaned"
-       	   }
-     }
+        always {
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            junit 'build/reports/**/*.xml'
+        }
+    }
 }
 
