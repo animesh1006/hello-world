@@ -43,7 +43,7 @@ pipeline {
     stage("build") {
 	steps {
         echo 'Building the application...'
-        sh './gradlew build'
+        sh './gradle build'
 		slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       	}
       }
@@ -55,7 +55,7 @@ pipeline {
 	      }
 	   }
       steps {
-	 sh './gradlew check'
+	 sh './gradle check'
         echo 'Testing the Applications Test-1'
     	    }
 	    post {
