@@ -55,11 +55,19 @@ pipeline {
 	      }
 	   }
       steps {
-	 sh 'npm run test-ci'
+	 
         echo 'Testing the Applications Test-1'
     	    }
 	 }
-    	   
+    	publishHTML target: [
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'coverage',
+            reportFiles: 'index.html',
+            reportName: 'RCov Report'
+          ]
+	  
       stage("deploy") {
       steps {
         echo 'Deploying the application...'
@@ -95,7 +103,7 @@ post {
        	  }
      always {
         // Let's wipe out the workspace before we finish!    deleteDir()
-                junit 'test-results.xml' 
+                echo "Workspace cleaned"
        	   }
      }
 }
