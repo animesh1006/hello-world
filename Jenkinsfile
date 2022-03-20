@@ -101,7 +101,7 @@ post {
 	    publishHTML([
 allowMissing: false,
 alwaysLinkToLastBuild: false,
-includes: '**/*',
+includes: '**/*.png',
 keepAll: true,
 reportDir: 'reports/',
 reportFiles: 'test.html',
