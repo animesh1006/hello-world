@@ -21,6 +21,25 @@ pipeline {
   	}
   stages {
     
+	  stage('write') {
+           steps {
+               script {
+                   def date = new Date()
+                   def data = "Hello World\nSecond line\n" + date
+                   writeFile(file: 'zorg.txt', text: data)
+                   sh "ls -l"
+               }
+           }
+	  }
+       stage('read') {
+           steps {
+               script {
+                   def data = readFile(file: 'zorg.txt')
+                   println(data)
+               }
+           }
+       }
+   	  
     stage("build") {
 	steps {
         echo 'Building the application...'
@@ -55,10 +74,10 @@ echo "Test1"
 echo "Test2"
 },
 "thirdTask" : {
-echo "Test1"
+echo "Test3"
 },
 "fourthTask" : {
-echo "Test1"
+echo "Test4"
 }
 )
 }
