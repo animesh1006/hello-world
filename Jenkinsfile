@@ -95,11 +95,11 @@ post {
               keepAll: true,
               reportDir: 'coverage',
               reportFiles: 'index.html',
-              reportName: 'RCov Report'
+              reportName: 'RCovReport'
             ]
-     failure {
-         echo "Test run failed."
-       	  }
+	    // * failure {
+         * echo "Test run failed."
+       	  } * //
      always {
         // Let's wipe out the workspace before we finish!    deleteDir()
                 echo "Workspace cleaned"
