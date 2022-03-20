@@ -59,15 +59,7 @@ pipeline {
         echo 'Testing the Applications Test-1'
     	    }
 	 }
-    	publishHTML target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportDir: 'coverage',
-            reportFiles: 'index.html',
-            reportName: 'RCov Report'
-          ]
-	  
+    	  
       stage("deploy") {
       steps {
         echo 'Deploying the application...'
@@ -96,8 +88,15 @@ sh "cp zorg.txt zorg4.txt"
    // Post-build actions
 post {
     success {
-        echo "Test run completed succesfully."
-       	 }
+          // publish html
+          publishHTML target: [
+              allowMissing: false,
+              alwaysLinkToLastBuild: false,
+              keepAll: true,
+              reportDir: 'coverage',
+              reportFiles: 'index.html',
+              reportName: 'RCov Report'
+            ]
      failure {
          echo "Test run failed."
        	  }
