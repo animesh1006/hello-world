@@ -58,12 +58,12 @@ pipeline {
 	 
         echo 'Testing the Applications Test-1'
     	    }
-	 }
-    	  post {
+	    post {
 	always {
 	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
-	}
-      }
+	      }
+    	   }
+       }
 	  
       stage("deploy") {
       steps {
