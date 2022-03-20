@@ -85,14 +85,7 @@ sh "cp zorg.txt zorg4.txt"
 }
 
   }
-	node {
-    sh 'ls -l'
-    dir ('reports') {
-        writeFile file:'dummy', text:''
-    }
-    sh 'ls -l'
-}
-	
+		
    // Post-build actions
 post {
     success {
