@@ -46,16 +46,18 @@ pipeline {
            }
     	}
 // Post-build actions
-    post {
-        always {
-            script {
-                BUILD_USER = getBuildUser()
+
+	  post {
+            success {
+                echo "Test run completed succesfully."
+           	 }
+            failure {
+                echo "Test run failed."
           	  }
-            echo 'Hi Build Team here.'            
-		slackSend channel: '#cicd',
-                color: COLOR_MAP[currentBuild.currentResult],
-                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}\n More info at: ${env.BUILD_URL}"
-      	   }
-    	  }
-	}
+            always {
+        // Let's wipe out the workspace before we finish!    deleteDir()
+                echo "Workspace cleaned"
+        	   }
+   	   }
   }
+}
