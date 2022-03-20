@@ -45,18 +45,25 @@ pipeline {
         echo 'Deploying the application...'
            }
     	}
- stage("Parallel test") {	  
- parallel(firstTask: {
-  echo 'Testing the Applications Test-1'
-}, secondTask: {
-  echo 'Testing the Applications Test-2'
-}, ThirdTask: {
-  echo 'Testing the Applications Test-3'
-}, FourthTask: {
-  echo 'Testing the Applications Test-4'
- }
+ stage("Parallel") {
+steps {
+parallel (
+"firstTask" : {
+echo "Test1"
+},
+"secondTask" : {
+echo "Test2"
+},
+"thirdTask" : {
+echo "Test1"
+},
+"fourthTask" : {
+echo "Test1"
+}
 )
- }
+}
+}
+
   }
    // Post-build actions
 post {
