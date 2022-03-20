@@ -89,16 +89,18 @@ sh "cp zorg.txt zorg4.txt"
 post {
     success {
           // publish html
-          publishHTML target: [
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: true,
-              reportDir: 'coverage/',
-              reportFiles: 'index.html',
-              reportName: 'RCovReport'
-            ]
 	    
-     always {
+	    publishHTML([
+allowMissing: false,
+alwaysLinkToLastBuild: false,
+includes: '**/*',
+keepAll: true,
+reportDir: 'reports/',
+reportFiles: 'test.html',
+reportName: 'HTML Report',
+reportTitles: 'FH BP'
+])
+	 always {
         // Let's wipe out the workspace before we finish!    deleteDir()
                 echo "Workspace cleaned"
        	   }
