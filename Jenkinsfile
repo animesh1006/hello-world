@@ -45,8 +45,20 @@ pipeline {
         echo 'Deploying the application...'
            }
     	}
-// Post-build actions
+ stage("Parallel test") {	  
+ parallel(firstTask: {
+  echo 'Testing the Applications Test-1'
+}, secondTask: {
+  echo 'Testing the Applications Test-2’
+}, ThirdTask: {
+  echo 'Testing the Applications Test-3'
+}, FourthTask: {
+  echo 'Testing the Applications Test-4'
+ }
+)
+ }
   }
+   // Post-build actions
 post {
     success {
         echo "Test run completed succesfully."
