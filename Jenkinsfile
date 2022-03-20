@@ -59,7 +59,12 @@ pipeline {
         echo 'Testing the Applications Test-1'
     	    }
 	 }
-    	  
+    	  post {
+	always {
+	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+	}
+      }
+	  
       stage("deploy") {
       steps {
         echo 'Deploying the application...'
@@ -88,23 +93,10 @@ sh "cp zorg.txt zorg4.txt"
 		
    // Post-build actions
 post {
-    success {
-          // publish html
-	    
-	    publishHTML([
-allowMissing: false,
-alwaysLinkToLastBuild: false,
-includes: '**/*',
-keepAll: true,
-reportDir: 'reports/',
-reportFiles: 'test.html',
-reportName: 'HTML Report',
-reportTitles: 'FH BP'
-])
-	 always {
+   	 always {
         // Let's wipe out the workspace before we finish!    deleteDir()
                 echo "Workspace cleaned"
        	   }
      }
 }
-}
+
