@@ -68,16 +68,16 @@ pipeline {
 steps {
 parallel (
 "firstTask" : {
-echo "Test1"
+sh "cp zorg.txt zorg1-$(date +"%m-%d-%y-%T").txt"
 },
 "secondTask" : {
-echo "Test2"
+sh "cp zorg.txt zorg2-$(date +"%m-%d-%y-%T").txt"
 },
 "thirdTask" : {
-echo "Test3"
+sh "cp zorg.txt zorg3-$(date +"%m-%d-%y-%T").txt"
 },
 "fourthTask" : {
-echo "Test4"
+sh "cp zorg.txt zorg4-$(date +"%m-%d-%y-%T").txt"
 }
 )
 }
