@@ -94,7 +94,7 @@ post {
        	  }
      always {
         // Let's wipe out the workspace before we finish!    deleteDir()
-                echo "Workspace cleaned"
+                junit 'build/reports/**/testa*.xml'
        	   }
      }
 }
