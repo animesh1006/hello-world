@@ -1,5 +1,11 @@
-def COLOR_MAP = [...]
-def getBuildUser(){...}
+def COLOR_MAP = [
+    'SUCCESS': 'Good', 
+    'FAILURE': 'Danger',
+]
+def getBuildUser() {
+    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
+}
+
 pipeline {
     // Set up local variables for your pipeline
     environment {
