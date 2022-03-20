@@ -55,6 +55,7 @@ pipeline {
 	      }
 	   }
       steps {
+	 sh 'npm run test-ci'
         echo 'Testing the Applications Test-1'
     	    }
 	 }
@@ -94,7 +95,7 @@ post {
        	  }
      always {
         // Let's wipe out the workspace before we finish!    deleteDir()
-                junit 'build/reports/**/testa*.xml'
+                junit 'test-results.xml' 
        	   }
      }
 }
