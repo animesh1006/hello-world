@@ -49,7 +49,7 @@ pipeline {
  parallel(firstTask: {
   echo 'Testing the Applications Test-1'
 }, secondTask: {
-  echo 'Testing the Applications Test-2’
+  echo 'Testing the Applications Test-2'
 }, ThirdTask: {
   echo 'Testing the Applications Test-3'
 }, FourthTask: {
