@@ -97,9 +97,7 @@ post {
               reportFiles: 'index.html',
               reportName: 'RCovReport'
             ]
-	    // * failure {
-         * echo "Test run failed."
-       	  } * //
+	    
      always {
         // Let's wipe out the workspace before we finish!    deleteDir()
                 echo "Workspace cleaned"
