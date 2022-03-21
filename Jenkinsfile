@@ -16,7 +16,7 @@ pipeline {
      archive (includes: ‘pkg/*.gem’)
      // Archive the built artifacts
      archive (includes: ‘pkg/*.gem’)
-    // publish html
+    publish html
      publishHTML ([
      allowMissing: false,
      alwaysLinkToLastBuild: false,
