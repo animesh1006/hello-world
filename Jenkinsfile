@@ -10,7 +10,7 @@ def buildNumber = currentBuild.number
 /* These platforms correspond to labels in ci.jenkins.io, see:
  *  https://github.com/jenkins-infra/documentation/blob/master/ci.adoc
  */
-List platforms = ['linux']
+List platforms = ['amazon-linux-2']
 Map branches = [:]
 
 for (int i = 0; i < platforms.size(); ++i) {
@@ -33,7 +33,7 @@ for (int i = 0; i < platforms.size(); ++i) {
                         /* Archive the test results */
                         junit '**/target/surefire-reports/TEST-*.xml'
 
-                        if (label == 'linux') {
+                        if (label == 'amazon-linux-2') {
                             infra.prepareToPublishIncrementals()
                             
                             recordIssues(
@@ -89,19 +89,8 @@ node('docker') {
                     sh "docker build -t ${imageName}:${imageTag} --no-cache --rm -f packaging/docker/unix/adoptopenjdk-8-hotspot/Dockerfile ."
                 }
             }
-
-  // TODO(oleg-nenashev): Reenable once CI is stable
-  //          if (branchName.startsWith('master')) {
-  //              stage('Publish container') {
-  //                  timestamps {
-  //                      image.push();
-  //                  }
-  //              }
-  //          }
+ 
         }
     }
 }
 
-// TODO: Run integration tests
-
-infra.maybePublishIncrementals()
