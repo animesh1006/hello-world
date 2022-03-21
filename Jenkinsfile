@@ -25,8 +25,8 @@ pipeline {
      reportFiles: ‘index.html’,
      reportName: “RCov Report”
        ])
-       }
-    }
+        }
+      }
     stage("test") {
       steps {
         echo 'Testing the Applications....'
@@ -40,12 +40,12 @@ pipeline {
     stage('cat README') {
       when {
         branch "release"
-      }
+          }
       steps {
         sh '''
         cat Readme.md
         '''
+        }
       }
-    }
   }
 }
