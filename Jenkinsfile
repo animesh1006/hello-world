@@ -20,34 +20,8 @@ pipeline {
     booleanParam(name:'executeTests',defaultValue:true, description:'Test execution')
   	}
   stages {
-	  
-	  stage("Build1") {
-           steps {
-		   echo 'Building the application Write...'
-               script {
-                   def date = new Date()
-                   def data = "Current date \nSecond line\n" + date
-                   writeFile(file: 'zorg.txt', text: data)
-                   sh "ls -l"
-                   }
-	       }
-	  }
-       stage("Build2") {
-           steps {
-		   echo 'Building the application Read...'
-               script {
-                   def data = readFile(file: 'zorg.txt')
-                   println(data)
-               }
-           }
-       }
-       stage("Message") {
-	steps {
-        echo 'Sending message over Slack...'
-        slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-      	}
-      }
-    stage("Testing in Progress") {
+		
+	stage("Testing in Progress") {
             parallel {
                 stage('Stage 1') {
                     steps { sh 'echo Test-1 passed' }
@@ -68,11 +42,21 @@ stage("Build") {
             parallel {
                 stage('Build 1') {
                     steps { sh 'echo Build-1' }
+                 script {
+                   def date = new Date()
+                   def data = "Current date \nSecond line\n" + date
+                   writeFile(file: 'zorg.txt', text: data)
+                   sh "ls -l"
+                   }
                 }
                 stage('Build 2') {
                     steps { sh 'echo Build-2' }
-                }
-                stage('Build 3') {
+                script {
+                   def data = readFile(file: 'zorg.txt')
+                   println(data)
+        	       }
+           	    }
+      		 stage('Build 3') {
                     steps { sh 'echo Build-3' }
                 }
                 stage('Build 4') {
@@ -97,7 +81,8 @@ stage("Distribution") {
             }
          }
        }
-    stage("Message") {
+
+     stage("Message") {
 	steps {
         echo 'Sending message over Slack...'
         slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
