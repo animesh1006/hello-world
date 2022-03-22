@@ -92,8 +92,7 @@ sh "cp zorg.txt zorg4.txt"
    // Post-build actions
 post {
         always {
-            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
-            junit 'build/reports/**/*.xml'
+             junit 'build/reports/**/*.xml'
         }
     }
 }
