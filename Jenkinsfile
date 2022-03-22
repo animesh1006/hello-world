@@ -55,8 +55,7 @@ pipeline {
 	      }
 	   }
       steps {
-	 sh './gradle check'
-        echo 'Testing the Applications Test-1'
+	  echo 'Testing the Applications Test-1'
     	    }
 	    post {
 	always {
