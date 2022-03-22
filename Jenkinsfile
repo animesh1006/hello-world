@@ -82,7 +82,7 @@ stage("Build") {
         }
 
 stage("Distribution") {
-            parallel {
+               parallel {
                 stage('Distribute 1') {
                     steps { sh "cp zorg.txt zorg1.txt"  }
                 }
@@ -96,6 +96,7 @@ stage("Distribution") {
                     steps { sh "cp zorg.txt zorg4.txt" }
             }
          }
+       }
   }
 		
    // Post-build actions
