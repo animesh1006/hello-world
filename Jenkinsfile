@@ -43,8 +43,7 @@ pipeline {
     stage("build") {
 	steps {
         echo 'Building the application...'
-        sh './gradlew build'
-		slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       	}
       }
     
