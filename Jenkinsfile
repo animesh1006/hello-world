@@ -7,16 +7,15 @@ def getBuildUser() {
 }
 
 pipeline {
-    // Set up local variables for your pipeline
+   
+  agent any
+   // Set up local variables for your pipeline
     environment {
 	   ENV_NAME = "${env.BRANCH_NAME}"
    	 // test variable: 0=success, 1=fail; must be string
         doError = '0'
         BUILD_USER = ''
     	}
-
-  agent any
-  
   parameters {
     booleanParam(name:'executeTests',defaultValue:true, description:'Test execution')
   	}
