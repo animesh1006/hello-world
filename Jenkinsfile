@@ -47,33 +47,55 @@ pipeline {
         slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       	}
       }
-    stage("Test") {
+    stage("Testing in Progress") {
             parallel {
                 stage('Stage 1') {
-                    steps { sh 'echo stage 1 passed' }
+                    steps { sh 'echo Test-1 passed' }
                 }
                 stage('Stage 2') {
-                    steps { sh 'echo stage 2 passed' }
+                    steps { sh 'echo Test-2 passed' }
                 }
                 stage('Stage 3') {
-                    steps { sh 'echo stage 3 passed' }
+                    steps { sh 'echo Test-3 passed' }
+                }
+                stage('Stage 4') {
+                    steps { sh 'echo Test-4 passed' }
                 }
             }
         }
 
-stage("Deploy") {
+stage("Build") {
             parallel {
-                stage('Stage 1') {
-                    steps { sh "cp zorg.txt zorg1.txt"  }
+                stage('Build 1') {
+                    steps { sh 'echo Build-1' }
                 }
-                stage('Stage 2') {
-                    steps { sh "cp zorg.txt zorg2.txt" }
+                stage('Build 2') {
+                    steps { sh 'echo Build-1' }
                 }
-                stage('Stage 3') {
-                    steps { sh "cp zorg.txt zorg4.txt" }
+                stage('Build 3') {
+                    steps { sh 'echo Build-1' }
+                }
+                stage('Build 4') {
+                    steps { sh 'echo Build-1' }
                 }
             }
         }
+
+stage("Distribution") {
+            parallel {
+                stage('Distribute 1') {
+                    steps { sh "cp zorg.txt zorg1.txt"  }
+                }
+                stage('Distribute 2') {
+                    steps { sh "cp zorg.txt zorg2.txt" }
+                }
+                stage('Distribute 3') {
+                    steps { sh "cp zorg.txt zorg3.txt" }
+                }
+                stage('Distribute 4') {
+                    steps { sh "cp zorg.txt zorg4.txt" }
+            }
+         }
   }
 		
    // Post-build actions
