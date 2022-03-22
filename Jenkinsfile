@@ -11,8 +11,7 @@ pipeline {
   agent any
    // Set up local variables for your pipeline
     environment {
-	   ENV_NAME = "${env.BRANCH_NAME}"
-   	 // test variable: 0=success, 1=fail; must be string
+	   // test variable: 0=success, 1=fail; must be string
         doError = '0'
         BUILD_USER = ''
     	}
