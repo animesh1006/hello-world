@@ -46,7 +46,29 @@ pipeline {
         slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       	}
       }
-    
+    stage("test") {
+      steps {
+        echo 'Testing the Applications....'
+      }
+    }
+	parallel (
+		"Test-1" : {
+	  echo 'Testing the Applications Test-1'
+    	    }
+	    
+	steps {
+	  echo 'Testing the Applications Test-2'
+    	    }
+	    
+	 steps {
+	  echo 'Testing the Applications Test-3'
+    	    }
+	    post {
+	
+	 steps {
+	  echo 'Testing the Applications Test-4'
+    	    }
+      }
       stage("deploy") {
       steps {
         echo 'Deploying the application...'
