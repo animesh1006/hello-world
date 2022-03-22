@@ -47,52 +47,27 @@ pipeline {
         slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       	}
       }
-    stage("Test") {
-      steps {
-        echo 'Testing the Applications....'
-    	  }
-        }
-	stage("Parallel") {
-		steps {
-	  parallel (
-		"Test-1" : {
-	  echo 'Testing the Applications Test-1'
-    	    },
-	    "Test-2" : {
-	  echo 'Testing the Applications Test-2'
-    	    },
-	    "Test-3" : {
-	  echo 'Testing the Applications Test-3'
-    	    },
-	   "Test-4" : {	
-	   echo 'Testing the Applications Test-4'
-	      }
-	    )
-          }
-	}
+    stage('Test') {
+       steps {      
+	 Parallel (
+		"step 1": { echo 'Testing the Applications Test-1' },
+	  	"step 2": { echo 'Testing the Applications Test-2' },
+                "step 3": { echo 'Testing the Applications Test-3' },
+                "step 4": { echo 'Testing the Applications Test-4' }
+                )
+            }
+	  }
+	 
       stage("Deploy") {
       steps {
-        echo 'Deploying the application...'
-           }
-    	}
-	 stage("Parallel") {
-	  steps {
-	    parallel (
-		"firstTask" : {
-		sh "cp zorg.txt zorg1.txt"
-		   },
-		"secondTask" : {
-		sh "cp zorg.txt zorg2.txt"
-		   },
-		"thirdTask" : {
-		sh "cp zorg.txt zorg3.txt"
-		   },
-		"fourthTask" : {
-		sh "cp zorg.txt zorg4.txt"
-		}
-	     )
+	    Parallel (
+		"step 1": { sh "cp zorg.txt zorg1.txt" },
+	  	"step 2": { sh "cp zorg.txt zorg2.txt" },
+                "step 3": { sh "cp zorg.txt zorg3.txt" },
+                "step 4": { sh "cp zorg.txt zorg4.txt"}
+                )
+            }
 	  }
-	}
   }
 		
    // Post-build actions
