@@ -15,11 +15,12 @@ pipeline {
     	}
 
   agent any
-	
+  
   parameters {
     booleanParam(name:'executeTests',defaultValue:true, description:'Test execution')
   	}
-   	   
+   stages {
+		
 	stage("Testing in Progress") {
             parallel {
                 stage('Stage 1') {
@@ -35,7 +36,7 @@ pipeline {
                     steps { sh 'echo Test-4 passed' }
                 }
             }
-     // * success {
+      // * success {
      // publishHTML ([
     // allowMissing: false,
     // alwaysLinkToLastBuild: false,
@@ -48,6 +49,7 @@ pipeline {
 // properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '10', 
   //  artifactNumToKeepStr: '10', daysToKeepStr: '7', numToKeepStr: '10']], gitLabConnection('GitLab'), pipelineTriggers([[$class: 'TimerTrigger', spec: 'H 9 * * 1 *']])])
 	   
+
 stage("Build") {
 	   parallel {
          stage('Build 1') {
