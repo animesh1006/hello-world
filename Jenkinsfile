@@ -21,7 +21,7 @@ pipeline {
   	}
   stages {
 	  
-	  stage('Build1') {
+	  stage("Build1") {
            steps {
 		   echo 'Building the application Write...'
                script {
@@ -32,7 +32,7 @@ pipeline {
                    }
 	       }
 	  }
-       stage('Build2') {
+       stage("Build2") {
            steps {
 		   echo 'Building the application Read...'
                script {
@@ -47,7 +47,7 @@ pipeline {
         slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       	}
       }
-    stage('Test') {
+    stage("Test") {
        steps {      
 	 Parallel (
 		"step 1": { echo 'Testing the Applications Test-1' },
