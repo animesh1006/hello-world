@@ -55,19 +55,16 @@ pipeline {
 		"Test-1" : {
 	  echo 'Testing the Applications Test-1'
     	    }
-	    
-	steps {
+	    "Test-2" : {
 	  echo 'Testing the Applications Test-2'
     	    }
-	    
-	 steps {
+	    "Test-13 : {
 	  echo 'Testing the Applications Test-3'
     	    }
-	    post {
-	
-	 steps {
-	  echo 'Testing the Applications Test-4'
-    	    }
+	   "Test-4" : {	
+	   echo 'Testing the Applications Test-4'
+	   }
+	)
       }
       stage("deploy") {
       steps {
