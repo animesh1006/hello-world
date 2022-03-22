@@ -19,44 +19,94 @@ pipeline {
   parameters {
     booleanParam(name:'executeTests',defaultValue:true, description:'Test execution')
   	}
-  stages {
-    
-    stage("build") {
+   stages {
+		
+	stage("Testing in Progress") {
+            parallel {
+                stage('Stage 1') {
+                    steps { sh 'echo Test-1 passed' }
+                }
+                stage('Stage 2') {
+                    steps { sh 'echo Test-2 passed' }
+                }
+                stage('Stage 3') {
+                    steps { sh 'echo Test-3 passed' }
+                }
+                stage('Stage 4') {
+                    steps { sh 'echo Test-4 passed' }
+                }
+            }
+     // * success {
+     // publishHTML ([
+    // allowMissing: false,
+    // alwaysLinkToLastBuild: false,
+    // keepAll: true,
+    // reportDir: ‘coverage’,
+    // reportFiles: ‘index.html’,
+    // reportName: “RCov Report”
+     //  ]) 
+        }
+pproperties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '10', 
+    artifactNumToKeepStr: '10', daysToKeepStr: '7', numToKeepStr: '10']], gitLabConnection('GitLab'), pipelineTriggers([[$class: 'TimerTrigger', spec: 'H 9 * * 1 *']])])
+	   
+stage("Build") {
+	   parallel {
+         stage('Build 1') {
+                    steps { 
+                 script {
+                   def date = new Date()
+                   def data = "Current date \nSecond line\n" + date
+                   writeFile(file: 'zorg.txt', text: data)
+                   sh "ls -l"
+                   }
+                 }
+                }
+                stage('Build 2') {
+                    steps { 
+                script {
+                   def data = readFile(file: 'zorg.txt')
+                   println(data)
+        	       }
+		    }
+           	    }
+      		 stage('Build 3') {
+                    steps { sh 'echo Build-3' }
+                }
+                stage('Build 4') {
+                    steps { sh 'echo Build-4' }
+                }
+            }
+        }
+
+stage("Distribution") {
+               parallel {
+                stage('Distribute 1') {
+                    steps { sh "cp zorg.txt zorg1.txt"  }
+                }
+                stage('Distribute 2') {
+                    steps { sh "cp zorg.txt zorg2.txt" }
+                }
+                stage('Distribute 3') {
+                    steps { sh "cp zorg.txt zorg3.txt" }
+                }
+                stage('Distribute 4') {
+                    steps { sh "cp zorg.txt zorg4.txt" }
+            }
+         }
+       }
+
+     stage("Message") {
 	steps {
-        echo 'Building the application...'
-        echo 'Building Version ${NEW_VERSION}'
-		slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        echo 'Sending message over Slack...'
+        slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       	}
       }
-    
-    stage("test") {
-      when {
-        expression {
-          params.executeTests
-	      }
-	   }
-      steps {
-        echo 'Testing the Applications Test-1'
-    	    }
-	 }
-    	   
-      stage("deploy") {
-      steps {
-        echo 'Deploying the application...'
-           }
-    	}
-// Post-build actions
   }
+		
+   // Post-build actions
 post {
-    success {
-        echo "Test run completed succesfully."
-       	 }
-     failure {
-         echo "Test run failed."
-       	  }
-     always {
-        // Let's wipe out the workspace before we finish!    deleteDir()
-                echo "Workspace cleaned"
-       	   }
-     }
+        always {
+             echo 'Pipe line completed'
+        }
+    }
 }
