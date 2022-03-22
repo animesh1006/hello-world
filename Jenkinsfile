@@ -26,7 +26,7 @@ pipeline {
 		   echo 'Building the application Write...'
                script {
                    def date = new Date()
-                   def data = "Hello World\nSecond line\n" + date
+                   def data = "Current date \nSecond line\n" + date
                    writeFile(file: 'zorg.txt', text: data)
                    sh "ls -l"
                    }
@@ -70,13 +70,13 @@ stage("Build") {
                     steps { sh 'echo Build-1' }
                 }
                 stage('Build 2') {
-                    steps { sh 'echo Build-1' }
+                    steps { sh 'echo Build-2' }
                 }
                 stage('Build 3') {
-                    steps { sh 'echo Build-1' }
+                    steps { sh 'echo Build-3' }
                 }
                 stage('Build 4') {
-                    steps { sh 'echo Build-1' }
+                    steps { sh 'echo Build-4' }
                 }
             }
         }
@@ -97,6 +97,12 @@ stage("Distribution") {
             }
          }
        }
+    stage("Message") {
+	steps {
+        echo 'Sending message over Slack...'
+        slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+      	}
+      }
   }
 		
    // Post-build actions
