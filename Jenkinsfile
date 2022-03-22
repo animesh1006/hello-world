@@ -92,7 +92,7 @@ sh "cp zorg.txt zorg4.txt"
    // Post-build actions
 post {
         always {
-             archiveArtifacts artifacts: 'generatedFile.txt', onlyIfSuccessful: true
+             echo 'Pipe line completed'
         }
     }
 }
