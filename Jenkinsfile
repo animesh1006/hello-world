@@ -44,7 +44,7 @@ pipeline {
     // reportDir: ‘coverage’,
     // reportFiles: ‘index.html’,
     // reportName: “RCov Report”
-       ]) * //
+     //  ]) 
         }
 
 stage("Build") {
