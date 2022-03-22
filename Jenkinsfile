@@ -58,7 +58,7 @@ pipeline {
 	    "Test-2" : {
 	  echo 'Testing the Applications Test-2'
     	    },
-	    "Test-13 : {
+	    "Test-3" : {
 	  echo 'Testing the Applications Test-3'
     	    },
 	   "Test-4" : {	
