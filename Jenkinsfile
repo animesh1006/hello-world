@@ -39,22 +39,24 @@ pipeline {
         }
 
 stage("Build") {
-            parallel {
-                stage('Build 1') {
-                    steps { sh 'echo Build-1' }
+        parallel {
+         stage('Build 1') {
+                    steps { 
                  script {
                    def date = new Date()
                    def data = "Current date \nSecond line\n" + date
                    writeFile(file: 'zorg.txt', text: data)
                    sh "ls -l"
                    }
+                 }
                 }
                 stage('Build 2') {
-                    steps { sh 'echo Build-2' }
+                    steps { 
                 script {
                    def data = readFile(file: 'zorg.txt')
                    println(data)
         	       }
+		    }
            	    }
       		 stage('Build 3') {
                     steps { sh 'echo Build-3' }
