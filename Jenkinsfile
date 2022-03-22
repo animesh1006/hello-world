@@ -48,26 +48,32 @@ pipeline {
       	}
       }
     stage("Test") {
-       steps {      
-	 Parallel (
-		"step 1": { echo 'Testing the Applications Test-1' },
-	  	"step 2": { echo 'Testing the Applications Test-2' },
-                "step 3": { echo 'Testing the Applications Test-3' },
-                "step 4": { echo 'Testing the Applications Test-4' }
-                )
+            parallel {
+                stage('Stage 1') {
+                    steps { sh 'echo stage 1 passed' }
+                }
+                stage('Stage 2') {
+                    steps { sh 'echo stage 2 passed' }
+                }
+                stage('Stage 3') {
+                    steps { sh 'echo stage 3 passed' }
+                }
             }
-	  }
-	 
-      stage("Deploy") {
-      steps {
-	    Parallel (
-		"step 1": { sh "cp zorg.txt zorg1.txt" },
-	  	"step 2": { sh "cp zorg.txt zorg2.txt" },
-                "step 3": { sh "cp zorg.txt zorg3.txt" },
-                "step 4": { sh "cp zorg.txt zorg4.txt"}
-                )
+        }
+
+stage("Deploy") {
+            parallel {
+                stage('Stage 1') {
+                    steps { sh "cp zorg.txt zorg1.txt"  }
+                }
+                stage('Stage 2') {
+                    steps { sh "cp zorg.txt zorg2.txt" }
+                }
+                stage('Stage 3') {
+                    steps { sh "cp zorg.txt zorg4.txt" }
+                }
             }
-	  }
+        }
   }
 		
    // Post-build actions
