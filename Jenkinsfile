@@ -54,13 +54,13 @@ pipeline {
 	parallel (
 		"Test-1" : {
 	  echo 'Testing the Applications Test-1'
-    	    }
+    	    },
 	    "Test-2" : {
 	  echo 'Testing the Applications Test-2'
-    	    }
+    	    },
 	    "Test-13 : {
 	  echo 'Testing the Applications Test-3'
-    	    }
+    	    },
 	   "Test-4" : {	
 	   echo 'Testing the Applications Test-4'
 	   }
