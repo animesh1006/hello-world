@@ -48,8 +48,7 @@ pipeline {
         }
 
 stage("Build") {
-	agent { label 'develop' }
-        parallel {
+	   parallel {
          stage('Build 1') {
                     steps { 
                  script {
