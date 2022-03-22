@@ -21,18 +21,20 @@ pipeline {
   	}
   stages {
     
-	  stage('write') {
+	  stage('Build1') {
            steps {
+		   echo 'Building the application Write...'
                script {
                    def date = new Date()
                    def data = "Hello World\nSecond line\n" + date
                    writeFile(file: 'zorg.txt', text: data)
                    sh "ls -l"
-               }
-           }
+                   }
+	       }
 	  }
-       stage('read') {
+       stage('Build2') {
            steps {
+		   echo 'Building the application Read...'
                script {
                    def data = readFile(file: 'zorg.txt')
                    println(data)
@@ -40,18 +42,20 @@ pipeline {
            }
        }
    	  
-    stage("build") {
+    stage("Message") {
 	steps {
-        echo 'Building the application...'
+        echo 'Sending message over Slack...'
         slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       	}
       }
-    stage("test") {
+    stage("Test") {
       steps {
         echo 'Testing the Applications....'
-      }
-    }
-	parallel (
+    	  }
+        }
+	stage("Parallel") {
+		steps {
+	  parallel (
 		"Test-1" : {
 	  echo 'Testing the Applications Test-1'
     	    },
@@ -66,7 +70,8 @@ pipeline {
 	   }
 	)
       }
-      stage("deploy") {
+	}
+      stage("Deploy") {
       steps {
         echo 'Deploying the application...'
            }
