@@ -20,7 +20,7 @@ pipeline {
     booleanParam(name:'executeTests',defaultValue:true, description:'Test execution')
   	}
   stages {
-    
+	  
 	  stage('Build1') {
            steps {
 		   echo 'Building the application Write...'
@@ -41,8 +41,7 @@ pipeline {
                }
            }
        }
-   	  
-    stage("Message") {
+       stage("Message") {
 	steps {
         echo 'Sending message over Slack...'
         slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
@@ -67,34 +66,33 @@ pipeline {
     	    },
 	   "Test-4" : {	
 	   echo 'Testing the Applications Test-4'
-	   }
-	)
-      }
+	      }
+	    )
+          }
 	}
       stage("Deploy") {
       steps {
         echo 'Deploying the application...'
            }
     	}
- stage("Parallel") {
-steps {
-parallel (
-"firstTask" : {
-sh "cp zorg.txt zorg1.txt"
-},
-"secondTask" : {
-sh "cp zorg.txt zorg2.txt"
-},
-"thirdTask" : {
-sh "cp zorg.txt zorg3.txt"
-},
-"fourthTask" : {
-sh "cp zorg.txt zorg4.txt"
-}
-)
-}
-}
-
+	 stage("Parallel") {
+	  steps {
+	    parallel (
+		"firstTask" : {
+		sh "cp zorg.txt zorg1.txt"
+		   },
+		"secondTask" : {
+		sh "cp zorg.txt zorg2.txt"
+		   },
+		"thirdTask" : {
+		sh "cp zorg.txt zorg3.txt"
+		   },
+		"fourthTask" : {
+		sh "cp zorg.txt zorg4.txt"
+		}
+	     )
+	  }
+	}
   }
 		
    // Post-build actions
