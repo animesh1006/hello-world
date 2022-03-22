@@ -92,7 +92,7 @@ sh "cp zorg.txt zorg4.txt"
    // Post-build actions
 post {
         always {
-             junit 'build/reports/**/*.xml'
+             archiveArtifacts artifacts: 'generatedFile.txt', onlyIfSuccessful: true
         }
     }
 }
