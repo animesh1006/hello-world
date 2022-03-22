@@ -55,8 +55,7 @@ pipeline {
           params.executeTests
 	      }
 	   }
-      steps {
-	      "Test-1" : {
+          "Test-1" : {
 	echo 'Testing the Applications Test-1'
 	},
 	"Test-2" : {
@@ -70,6 +69,7 @@ pipeline {
 	  }
 	)
       }
+    }
         post {
 	always {
 	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
