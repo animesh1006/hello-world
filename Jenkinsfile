@@ -1,96 +1,62 @@
-/* Only keep the 10 most recent builds. */
-properties([[$class: 'BuildDiscarderProperty',
-                strategy: [$class: 'LogRotator', numToKeepStr: '10']]])
-
-// TODO: Move it to Jenkins Pipeline Library
-
-def branchName = currentBuild.projectName
-def buildNumber = currentBuild.number
-
-/* These platforms correspond to labels in ci.jenkins.io, see:
- *  https://github.com/jenkins-infra/documentation/blob/master/ci.adoc
- */
-List platforms = ['develop']
-Map branches = [:]
-
-for (int i = 0; i < platforms.size(); ++i) {
-    String label = platforms[i]
-    branches[label] = {
-        node(label + " && docker") {
-            timestamps {
-                ws("platform_${label}_${branchName}_${buildNumber}") {
-                    stage('Checkout') {
-                        checkout scm
-                    }
-
-                    stage('Build') {
-                        timeout(60) {
-                            infra.runMaven(['clean', 'install', '-Dset.changelist', '-Dmaven.test.failure.ignore=true', '-Denvironment=test', '-Ppackage-app,package-vanilla,jacoco,run-its'])
-                        }
-                    }
-
-                    stage('Archive') {
-                        /* Archive the test results */
-                        junit '**/target/surefire-reports/TEST-*.xml'
-
-                        if (label == 'develop') {
-                            infra.prepareToPublishIncrementals()
-                            
-                            recordIssues(
-                              enabledForFailure: true, aggregatingResults: true, 
-                              tools: [java(), spotBugs(pattern: '**/target/spotbugsXml.xml')]
-                            )
-
-                            publishCoverage adapters: [jacocoAdapter(mergeToOneReport: true, path: 'vanilla-package/target/site/jacoco-aggregate/*.xml')]
-                        }
-                    }
-                }
-            }
-        }
-    }
+def COLOR_MAP = [
+    'SUCCESS': 'Good', 
+    'FAILURE': 'Danger',
+]
+def getBuildUser() {
+    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
 }
 
-/* Execute our platforms in parallel */
-parallel(branches)
+pipeline {
+    // Set up local variables for your pipeline
+    environment {
+        // test variable: 0=success, 1=fail; must be string
+        doError = '0'
+        BUILD_USER = ''
+    	}
 
-stage('Verify Custom WAR Packager demo')
-Map demos = [:]
-demos['cwp'] = {
-    node('docker') {
-        timestamps {
-            ws("cwp_${branchName}_${buildNumber}") {
-                checkout scm
-                stage('CWP') {
-                    dir('demo/cwp') {
-                        sh "make clean buildInDocker run"
-                    }
-                }
-            }
-        }
-    }
+  agent any
+  
+  parameters {
+    booleanParam(name:'executeTests',defaultValue:true, description:'Test execution')
+  	}
+  stages {
+    
+    stage("build") {
+	steps {
+        echo 'Building the application...'
+        echo 'Building Version ${NEW_VERSION}'
+		slackSend channel: "#cicd", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+      	}
+      }
+    
+    stage("test") {
+      when {
+        expression {
+          params.executeTests
+	      }
+	   }
+      steps {
+        echo 'Testing the Applications Test-1'
+    	    }
+	 }
+    	   
+      stage("deploy") {
+      steps {
+        echo 'Deploying the application...'
+           }
+    	}
+// Post-build actions
+  }
+post {
+    success {
+        echo "Test run completed succesfully."
+       	 }
+     failure {
+         echo "Test run failed."
+       	  }
+     always {
+        // Let's wipe out the workspace before we finish!    deleteDir()
+                echo "Workspace cleaned"
+       	   }
+     }
 }
-
-parallel(demos)
-
-node('docker') {
-    ws("container_${branchName}_${buildNumber}") {
-        infra.withDockerCredentials {
-            def image
-            def imageName = "${env.DOCKERHUB_ORGANISATION}/jenkinsfile-runner"
-            def imageTag
-
-            stage('Build container') {
-                timestamps {
-                    def scmVars = checkout scm
-
-                    def shortCommit = scmVars.GIT_COMMIT
-                    imageTag = branchName.equals("develop") ? "latest" : branchName
-                    echo "Creating the container ${imageName}:${imageTag}"
-                    sh "docker build -t ${imageName}:${imageTag} --no-cache --rm -f packaging/docker/unix/adoptopenjdk-8-hotspot/Dockerfile ."
-                }
-            }
- 
-        }
-    }
-}
-
