@@ -47,45 +47,37 @@ pipeline {
       	}
       }
     
-    stage("test") {
+    stage("Parallel") {
+	steps {
+	parallel (
       when {
         expression {
           params.executeTests
 	      }
 	   }
       steps {
-	  echo 'Testing the Applications Test-1'
-    	    }
-	    post {
+	      "Test-1" : {
+	echo 'Testing the Applications Test-1'
+	},
+	"Test-2" : {
+	echo 'Testing the Applications Test-2'
+	},
+	"Test-3" : {
+	echo 'Testing the Applications Test-3'
+	},
+	"Test-4" : {
+	echo 'Testing the Applications Test-4'
+	  }
+	)
+      }
+        post {
 	always {
 	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
 	      }
-    	   }
-	steps {
-	  echo 'Testing the Applications Test-2'
-    	    }
-	    post {
-	always {
-	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
-	      }
-    	   }
-	 steps {
-	  echo 'Testing the Applications Test-3'
-    	    }
-	    post {
-	always {
-	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
-	      }
-    	   }
-	 steps {
-	  echo 'Testing the Applications Test-4'
-    	    }
-	    post {
-	always {
-	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
-	      }
-    	   }
-       }
+    	   }  
+	      
+	      
+	      
 	  
       stage("deploy") {
       steps {
