@@ -61,6 +61,30 @@ pipeline {
 	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
 	      }
     	   }
+	steps {
+	  echo 'Testing the Applications Test-2'
+    	    }
+	    post {
+	always {
+	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+	      }
+    	   }
+	 steps {
+	  echo 'Testing the Applications Test-3'
+    	    }
+	    post {
+	always {
+	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+	      }
+    	   }
+	 steps {
+	  echo 'Testing the Applications Test-4'
+    	    }
+	    post {
+	always {
+	    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+	      }
+    	   }
        }
 	  
       stage("deploy") {
