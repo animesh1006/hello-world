@@ -19,9 +19,7 @@ pipeline {
   parameters {
     booleanParam(name:'executeTests',defaultValue:true, description:'Test execution')
   	}
-   agent { label 'master' ,'develop','release'}
-	
-  stages {
+   stages {
 		
 	stage("Testing in Progress") {
             parallel {
@@ -50,6 +48,7 @@ pipeline {
         }
 
 stage("Build") {
+	agent { label 'develop' }
         parallel {
          stage('Build 1') {
                     steps { 
