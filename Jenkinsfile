@@ -50,11 +50,6 @@ pipeline {
     stage("Parallel") {
 	steps {
 	parallel (
-      when {
-        expression {
-          params.executeTests
-	      }
-	   }
           "Test-1" : {
 	echo 'Testing the Applications Test-1'
 	},
